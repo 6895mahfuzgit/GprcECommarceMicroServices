@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductGrpcMicroService.Data;
+using ProductGrpcMicroService.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace ProductGrpcMicroService
 
             app.UseEndpoints(endpoints =>
             {
-               // endpoints.MapGrpcService<GreeterService>();
+               endpoints.MapGrpcService<ProductService>();
 
                 endpoints.MapGet("/", async context =>
                 {
