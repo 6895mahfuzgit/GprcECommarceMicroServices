@@ -1,7 +1,9 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ProductGrpcMicroService.Data;
+using ProductGrpcMicroService.Models;
 using ProductGrpcMicroService.Protos;
 using System;
 using System.Collections.Generic;
@@ -42,6 +44,55 @@ namespace ProductGrpcMicroService.Services
                 CreatedTime = Timestamp.FromDateTime(product.CreatedTime)
             };
 
+            return productModel;
+        }
+
+        public override async Task GetAllProducts(GetAllProductRequest request,
+                                                IServerStreamWriter<ProductModel> responseStream,
+                                                ServerCallContext context)
+        {
+            var products = await _productContext.Products.ToListAsync();
+
+            foreach (var product in products)
+            {
+                var productModel = new ProductModel
+                {
+                    ProductId = product.ProductId,
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Status = ProductStatus.Instock,
+                    CreatedTime = Timestamp.FromDateTime(product.CreatedTime)
+                };
+
+                await responseStream.WriteAsync(productModel);
+            }
+        }
+
+        public override async Task<ProductModel> AddProduct(AddProductRequest request, ServerCallContext context)
+        {
+            var product = new Product
+            {
+                ProductId = request.Product.ProductId,
+                Name = request.Product.Name,
+                Description = request.Product.Description,
+                Price = request.Product.Price,
+                Status = Enums.ProductStatus.INSTOCK,
+                CreatedTime = request.Product.CreatedTime.ToDateTime()
+            };
+
+            _productContext.Products.Add(product);
+            await _productContext.SaveChangesAsync();
+
+            var productModel = new ProductModel
+            {
+                ProductId = product.ProductId,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Status = ProductStatus.Instock,
+                CreatedTime = Timestamp.FromDateTime(product.CreatedTime)
+            };
             return productModel;
         }
 
