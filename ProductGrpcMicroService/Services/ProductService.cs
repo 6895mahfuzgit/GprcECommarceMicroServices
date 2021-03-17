@@ -104,6 +104,53 @@ namespace ProductGrpcMicroService.Services
         }
 
 
+        public override async Task<ProductModel> UpdateProduct(UpdateProductRequest request, ServerCallContext context)
+        {
+            var product = _mapper.Map<Product>(request.Product);
+
+            bool isExist = await _productContext.Products.AnyAsync(x => x.ProductId == product.ProductId);
+            if (!isExist)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Requested product doesn't exists!!!"));
+            }
+
+            _productContext.Entry(product).State = EntityState.Modified;
+
+            try
+            {
+                await _productContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+
+            var productModel = _mapper.Map<ProductModel>(product);
+            return productModel;
+        }
+
+
+        public override async Task<DeleteProductResponse> DeleteProduct(DeleteProductRequest request, ServerCallContext context)
+        {
+            var product = await _productContext.Products.FindAsync(request.ProductId);
+
+            if (product == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound,"Requested product doesn't exists!!!"));
+            }
+
+            _productContext.Products.Remove(product);
+
+            var deleteCount = await _productContext.SaveChangesAsync();
+
+            var response = new DeleteProductResponse
+            {
+                Success = deleteCount > 0
+            };
+
+            return response;
+        }
 
     }
 }

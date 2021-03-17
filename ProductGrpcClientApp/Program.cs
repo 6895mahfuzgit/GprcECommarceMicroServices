@@ -40,19 +40,19 @@ namespace ProductGrpcClientApp
         private static async Task AddProductAsync(ProductProtoService.ProductProtoServiceClient client)
         {
 
-            var addProductResponse = await client.AddProductAsync(new AddProductRequest
-            {
-                Product = new ProductModel
-                {
-                    Name = "Test_1",
-                    Description = "This is a test_1 product.",
-                    Price = 100,
-                    Status = ProductStatus.Instock,
-                    CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow)
-                }
-            }); ;
+            //var addProductResponse = await client.AddProductAsync(new AddProductRequest
+            //{
+            //    Product = new ProductModel
+            //    {
+            //        Name = "Test_2",
+            //        Description = "This is a test_2 product.",
+            //        Price = 100,
+            //        Status = ProductStatus.Instock,
+            //        CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow)
+            //    }
+            //}); ;
 
-            Console.WriteLine("Added Product:-" + addProductResponse.ToString());
+            //Console.WriteLine("Added Product:-" + addProductResponse.ToString());
 
         }
 
