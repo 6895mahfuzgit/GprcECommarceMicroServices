@@ -21,7 +21,8 @@ namespace ProductGrpcMicroService
         {
             services.AddGrpc();
 
-            services.AddDbContext<ProductContext>(options =>options.UseInMemoryDatabase("ProductDB"));
+            services.AddDbContext<ProductContext>(options => options.UseInMemoryDatabase("ProductDB"));
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +37,7 @@ namespace ProductGrpcMicroService
 
             app.UseEndpoints(endpoints =>
             {
-               endpoints.MapGrpcService<ProductService>();
+                endpoints.MapGrpcService<ProductService>();
 
                 endpoints.MapGet("/", async context =>
                 {
