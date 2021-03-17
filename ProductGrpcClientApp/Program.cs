@@ -34,25 +34,62 @@ namespace ProductGrpcClientApp
             Console.WriteLine("Get All Product List ");
             await GetAllProductAsync(client);
             await AddProductAsync(client);
+
+            await UpdateProductAsync(client);
+            Console.WriteLine("Get All Product List ");
+            await GetAllProductAsync(client);
+
+            await DeleteProductAsync(client);
+            Console.WriteLine("Get All Product List ");
+            await GetAllProductAsync(client);
+
             Console.ReadLine();
+        }
+
+        private static async Task DeleteProductAsync(ProductProtoService.ProductProtoServiceClient client)
+        {
+            var replay = await client.DeleteProductAsync(new DeleteProductRequest
+            {
+                ProductId = 4
+            });
+
+            Console.WriteLine("Deleted Product Status : "+replay.ToString());
+        }
+
+        private static async Task UpdateProductAsync(ProductProtoService.ProductProtoServiceClient client)
+        {
+            var replay = await client.UpdateProductAsync(new UpdateProductRequest
+            {
+                Product = new ProductModel
+                {
+                    ProductId = 4,
+                    Name = "Test_2_1",
+                    Description = "This is a test_2_1 product.",
+                    Price = 100,
+                    Status = ProductStatus.Instock,
+                    CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow)
+                }
+            });
+
+            Console.WriteLine("After Update Product Obj:-" + replay.ToString());
         }
 
         private static async Task AddProductAsync(ProductProtoService.ProductProtoServiceClient client)
         {
 
-            //var addProductResponse = await client.AddProductAsync(new AddProductRequest
-            //{
-            //    Product = new ProductModel
-            //    {
-            //        Name = "Test_2",
-            //        Description = "This is a test_2 product.",
-            //        Price = 100,
-            //        Status = ProductStatus.Instock,
-            //        CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow)
-            //    }
-            //}); ;
+            var addProductResponse = await client.AddProductAsync(new AddProductRequest
+            {
+                Product = new ProductModel
+                {
+                    Name = "Test_2",
+                    Description = "This is a test_2 product.",
+                    Price = 100,
+                    Status = ProductStatus.Instock,
+                    CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow)
+                }
+            }); ;
 
-            //Console.WriteLine("Added Product:-" + addProductResponse.ToString());
+            Console.WriteLine("Added Product:-" + addProductResponse.ToString());
 
         }
 
