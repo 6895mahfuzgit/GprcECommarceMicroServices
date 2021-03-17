@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Grpc.Net.Client;
 using ProductGrpcMicroService.Protos;
 using System;
@@ -13,7 +14,7 @@ namespace ProductGrpcClientApp
             using var channel = GrpcChannel.ForAddress("https://localhost:5001");
             var client = new ProductProtoService.ProductProtoServiceClient(channel);
 
-            await GetProductAsync(client);
+
 
             // Get All Product
             Console.WriteLine("*****************************");
@@ -28,15 +29,36 @@ namespace ProductGrpcClientApp
 
             //}
 
-            //Get All Product using C# 9 
+
+            await GetProductAsync(client);
             Console.WriteLine("Get All Product List ");
             await GetAllProductAsync(client);
-
+            await AddProductAsync(client);
             Console.ReadLine();
+        }
+
+        private static async Task AddProductAsync(ProductProtoService.ProductProtoServiceClient client)
+        {
+
+            var addProductResponse = await client.AddProductAsync(new AddProductRequest
+            {
+                Product = new ProductModel
+                {
+                    Name = "Test_1",
+                    Description = "This is a test_1 product.",
+                    Price = 100,
+                    Status = ProductStatus.Instock,
+                    CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow)
+                }
+            }); ;
+
+            Console.WriteLine("Added Product:-" + addProductResponse.ToString());
+
         }
 
         private static async Task GetAllProductAsync(ProductProtoService.ProductProtoServiceClient client)
         {
+            //Get All Product using C# 9 
             using var clientData = client.GetAllProducts(new GetAllProductRequest());
             await foreach (var product in clientData.ResponseStream.ReadAllAsync())
             {
