@@ -3,6 +3,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using ProductGrpcMicroService.Protos;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ProductGrpcClientApp
@@ -34,16 +35,56 @@ namespace ProductGrpcClientApp
             Console.WriteLine("Get All Product List ");
             await GetAllProductAsync(client);
             await AddProductAsync(client);
+            Console.WriteLine("");
+            Console.WriteLine("");
 
             await UpdateProductAsync(client);
             Console.WriteLine("Get All Product List ");
             await GetAllProductAsync(client);
+            Console.WriteLine("");
+            Console.WriteLine("");
 
             await DeleteProductAsync(client);
             Console.WriteLine("Get All Product List ");
             await GetAllProductAsync(client);
+            Console.WriteLine("");
+            Console.WriteLine("");
+
+            await InsertBulkProductAsync(client);
+            Console.WriteLine("Get All Product List ");
+            await GetAllProductAsync(client);
 
             Console.ReadLine();
+        }
+
+        private static async Task InsertBulkProductAsync(ProductProtoService.ProductProtoServiceClient client)
+        {
+
+            using var clientBulk = client.InsertBulkProduct();
+
+            var listProduct = new List<ProductModel> {
+            new ProductModel{Name="Product_1",Description="Description_1",Price=100,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            new ProductModel{Name="Product_2",Description="Description_2",Price=200,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            new ProductModel{Name="Product_3",Description="Description_3",Price=300,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            new ProductModel{Name="Product_4",Description="Description_4",Price=400,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },new ProductModel{Name="Product_",Description="Description_",Price=100,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            new ProductModel{Name="Product_5",Description="Description_5",Price=500,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            new ProductModel{Name="Product_6",Description="Description_6",Price=600,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            new ProductModel{Name="Product_7",Description="Description_7",Price=700,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            new ProductModel{Name="Product_8",Description="Description_8",Price=800,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },new ProductModel{Name="Product_",Description="Description_",Price=100,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            new ProductModel{Name="Product_9",Description="Description_9",Price=900,Status=ProductStatus.Instock,CreatedTime=Timestamp.FromDateTime(DateTime.UtcNow) },
+            };
+
+            foreach (var product in listProduct)
+            {
+                await clientBulk.RequestStream.WriteAsync(product);
+            }
+
+            await clientBulk.RequestStream.CompleteAsync();
+
+            var response = await clientBulk;
+
+            Console.WriteLine("Total Inserted Product: " + response.InsertCount + " Status: " + response.Success);
+
         }
 
         private static async Task DeleteProductAsync(ProductProtoService.ProductProtoServiceClient client)
@@ -53,7 +94,7 @@ namespace ProductGrpcClientApp
                 ProductId = 4
             });
 
-            Console.WriteLine("Deleted Product Status : "+replay.ToString());
+            Console.WriteLine("Deleted Product Status : " + replay.ToString());
         }
 
         private static async Task UpdateProductAsync(ProductProtoService.ProductProtoServiceClient client)
