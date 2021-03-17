@@ -137,7 +137,7 @@ namespace ProductGrpcMicroService.Services
 
             if (product == null)
             {
-                throw new RpcException(new Status(StatusCode.NotFound,"Requested product doesn't exists!!!"));
+                throw new RpcException(new Status(StatusCode.NotFound, "Requested product doesn't exists!!!"));
             }
 
             _productContext.Products.Remove(product);
@@ -147,6 +147,25 @@ namespace ProductGrpcMicroService.Services
             var response = new DeleteProductResponse
             {
                 Success = deleteCount > 0
+            };
+
+            return response;
+        }
+
+        public override async Task<InsertBulkProductResponse> InsertBulkProduct(IAsyncStreamReader<ProductModel> requestStream, ServerCallContext context)
+        {
+            while (await requestStream.MoveNext())
+            {
+                var product = _mapper.Map<Product>(requestStream.Current);
+                _productContext.Products.Add(product);
+            }
+
+            var countProduct = await _productContext.SaveChangesAsync();
+
+            var response = new InsertBulkProductResponse
+            {
+                InsertCount = countProduct,
+                Success = countProduct > 0
             };
 
             return response;
