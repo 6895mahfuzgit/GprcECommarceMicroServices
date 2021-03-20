@@ -16,11 +16,12 @@ namespace ProductWorkerServiceApp
     {
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _configuration;
-
-        public Worker(ILogger<Worker> logger, IConfiguration configuration)
+        private readonly ProductFactory _productFactory;
+        public Worker(ILogger<Worker> logger, IConfiguration configuration, ProductFactory productFactory)
         {
             _logger = logger;
             _configuration = configuration;
+            _productFactory = productFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -33,10 +34,10 @@ namespace ProductWorkerServiceApp
 
                 var client = new ProductProtoService.ProductProtoServiceClient(channel);
 
-                await GetProdudtAsync(client);
-                await AddProductAsync(client);
-
-
+                //  await GetProdudtAsync(client);
+                // await AddProductAsync(client);
+                var addProductFactory = await client.AddProductAsync(await _productFactory.Generate());
+                _logger.LogInformation("Add Product Response :{Product}", addProductFactory.ToString());
                 await Task.Delay(_configuration.GetValue<int>("WorkerService:TaskInterval"), stoppingToken);
             }
         }
@@ -47,7 +48,7 @@ namespace ProductWorkerServiceApp
             {
                 Product = new ProductModel
                 {
-                    Name = "Test_2"+ DateTime.UtcNow,
+                    Name = "Test_2" + DateTime.UtcNow,
                     Description = "This is a test_2 product.",
                     Price = 100,
                     Status = ProductStatus.Instock,

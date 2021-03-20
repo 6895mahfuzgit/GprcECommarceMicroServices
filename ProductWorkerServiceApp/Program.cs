@@ -19,6 +19,7 @@ namespace ProductWorkerServiceApp
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
+                    services.AddTransient<ProductFactory>();
                 });
     }
 }
