@@ -1,4 +1,10 @@
-﻿using ShoppingCartGrpcMicroserviceApp.Protos;
+﻿using AutoMapper;
+using Grpc.Core;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using ShoppingCartGrpcMicroserviceApp.Data;
+using ShoppingCartGrpcMicroserviceApp.Models;
+using ShoppingCartGrpcMicroserviceApp.Protos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +14,72 @@ namespace ShoppingCartGrpcMicroserviceApp.Services
 {
     public class ShoppingCartService : ShoppingCartProtoService.ShoppingCartProtoServiceBase
     {
+        private readonly ILogger<ShoppingCartService> _logger;
+        private readonly ShoppingCartContext _shoppingCartContext;
+        private readonly IMapper _mapper;
+
+        public ShoppingCartService(ILogger<ShoppingCartService> logger, ShoppingCartContext shoppingCartContext, IMapper mapper)
+        {
+            _logger = logger;
+            _shoppingCartContext = shoppingCartContext;
+            _mapper = mapper;
+        }
+
+        public override async Task<ShoppingCartModel> GetShoppigCart(GetShoppigCartRequest request, ServerCallContext context)
+        {
+            var shoppingCart = await _shoppingCartContext.ShoppingCarts.FirstOrDefaultAsync(x => x.UserName == request.Username);
+            if (shoppingCart == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Invalid User Cart"));
+            }
+
+            var shoppingCartModel = _mapper.Map<ShoppingCartModel>(shoppingCart);
+            return shoppingCartModel;
+        }
+
+        public override async Task<ShoppingCartModel> CreateShoppigCart(ShoppingCartModel request, ServerCallContext context)
+        {
+
+            var shoppingCart = _mapper.Map<ShoppingCart>(request);
+            var isExists = await _shoppingCartContext.ShoppingCarts.AnyAsync(x => x.UserName == shoppingCart.UserName);
+            if (isExists)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Invalid Request."));
+            }
+
+            _shoppingCartContext.ShoppingCarts.Add(shoppingCart);
+            await _shoppingCartContext.SaveChangesAsync();
+
+            var shoppingCartModel = _mapper.Map<ShoppingCartModel>(request);
+            return shoppingCartModel;
+        }
+
+        public override async Task<RemoveItemFromShoppingCartResponse> RemoveItemFromShoppingCart(RemoveItemFromShoppingCartRequest request, ServerCallContext context)
+        {
+            var shoppingCart = await _shoppingCartContext.ShoppingCarts.FirstOrDefaultAsync(x => x.UserName == request.Username);
+            if (shoppingCart == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Invalid Request."));
+            }
+
+            var removeCartItem = shoppingCart.Items.FirstOrDefault(x => x.ProductId == request.RemoveCartItem.ProductId);
+
+            if (removeCartItem == null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, "Invalid Product Item."));
+            }
+
+            _shoppingCartContext.Remove(removeCartItem);
+
+            var removeCount = await _shoppingCartContext.SaveChangesAsync();
+
+            var response = new RemoveItemFromShoppingCartResponse
+            {
+                Success = removeCount > 0
+            };
+
+            return response;
+        }
 
 
     }

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShoppingCartGrpcMicroserviceApp.Data;
+using ShoppingCartGrpcMicroserviceApp.Services;
 
 namespace ShoppingCartGrpcMicroserviceApp
 {
@@ -15,7 +16,8 @@ namespace ShoppingCartGrpcMicroserviceApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddDbContext<ShoppingCartContext>(options => options.UseInMemoryDatabase("ShoppingCartDB")); 
+            services.AddDbContext<ShoppingCartContext>(options => options.UseInMemoryDatabase("ShoppingCartDB"));
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,7 +32,7 @@ namespace ShoppingCartGrpcMicroserviceApp
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapGrpcService<Sh>();
+                endpoints.MapGrpcService<ShoppingCartService>();
 
                 endpoints.MapGet("/", async context =>
                 {
