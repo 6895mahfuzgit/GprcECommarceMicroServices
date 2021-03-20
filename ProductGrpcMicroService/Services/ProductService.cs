@@ -100,6 +100,7 @@ namespace ProductGrpcMicroService.Services
             //    CreatedTime = Timestamp.FromDateTime(product.CreatedTime)
             //};
             var productModel = _mapper.Map<ProductModel>(product);
+            _logger.LogInformation("Add Product Response :{Product}", productModel.ToString());
             return productModel;
         }
 
