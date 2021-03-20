@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductGrpcMicroService", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductGrpcClientApp", "ProductGrpcClientApp\ProductGrpcClientApp.csproj", "{75902A51-925C-460D-9B7D-C870A2B44834}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductWorkerServiceApp", "ProductWorkerServiceApp\ProductWorkerServiceApp.csproj", "{9F7E7C4F-65A1-408A-B06C-3DAD2885FE0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductWorkerServiceApp", "ProductWorkerServiceApp\ProductWorkerServiceApp.csproj", "{9F7E7C4F-65A1-408A-B06C-3DAD2885FE0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{70130290-28DA-4AA1-B8BA-33E46281C3F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShoppingCart", "ShoppingCart", "{61A54D38-13E1-4893-81F0-C073250E124B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartGrpcMicroserviceApp", "ShoppingCartGrpcMicroserviceApp\ShoppingCartGrpcMicroserviceApp.csproj", "{D9BE7035-B418-4FC3-AC92-94621B54152C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +33,19 @@ Global
 		{9F7E7C4F-65A1-408A-B06C-3DAD2885FE0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F7E7C4F-65A1-408A-B06C-3DAD2885FE0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F7E7C4F-65A1-408A-B06C-3DAD2885FE0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9BE7035-B418-4FC3-AC92-94621B54152C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9BE7035-B418-4FC3-AC92-94621B54152C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9BE7035-B418-4FC3-AC92-94621B54152C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9BE7035-B418-4FC3-AC92-94621B54152C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DC9AF54A-5F21-43FC-81AE-24FF5841B905} = {70130290-28DA-4AA1-B8BA-33E46281C3F5}
+		{75902A51-925C-460D-9B7D-C870A2B44834} = {70130290-28DA-4AA1-B8BA-33E46281C3F5}
+		{9F7E7C4F-65A1-408A-B06C-3DAD2885FE0C} = {70130290-28DA-4AA1-B8BA-33E46281C3F5}
+		{D9BE7035-B418-4FC3-AC92-94621B54152C} = {61A54D38-13E1-4893-81F0-C073250E124B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61B61DE5-CF52-49A3-918C-944FB04B0CA5}
