@@ -5,10 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShoppingCartGrpcMicroserviceApp.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ShoppingCartGrpcMicroserviceApp
 {
@@ -19,7 +15,7 @@ namespace ShoppingCartGrpcMicroserviceApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddDbContext<ShoppingCartContext>(options => options.UseInMemoryDatabase("ShoppingCartDB"));
+            services.AddDbContext<ShoppingCartContext>(options => options.UseInMemoryDatabase("ShoppingCartDB")); q
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

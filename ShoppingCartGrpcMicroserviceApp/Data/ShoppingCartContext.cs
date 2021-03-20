@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingCartGrpcMicroserviceApp.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ShoppingCartGrpcMicroserviceApp.Data
 {
@@ -13,7 +9,7 @@ namespace ShoppingCartGrpcMicroserviceApp.Data
         {
         }
 
-        public DbSet<ShoppingCart>  ShoppingCarts{ get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
     }
 }

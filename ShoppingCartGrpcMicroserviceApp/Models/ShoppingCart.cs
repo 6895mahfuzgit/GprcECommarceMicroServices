@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ShoppingCartGrpcMicroserviceApp.Models
 {
@@ -10,8 +7,6 @@ namespace ShoppingCartGrpcMicroserviceApp.Models
         public int Id { get; set; }
 
         public string UserName { get; set; }
-
-
 
         public List<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
 
