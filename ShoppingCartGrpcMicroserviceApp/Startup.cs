@@ -30,7 +30,7 @@ namespace ShoppingCartGrpcMicroserviceApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                //endpoints.MapGrpcService<Sh>();
 
                 endpoints.MapGet("/", async context =>
                 {

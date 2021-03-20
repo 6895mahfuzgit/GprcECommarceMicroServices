@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{7013
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShoppingCart", "ShoppingCart", "{61A54D38-13E1-4893-81F0-C073250E124B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartGrpcMicroserviceApp", "ShoppingCartGrpcMicroserviceApp\ShoppingCartGrpcMicroserviceApp.csproj", "{D9BE7035-B418-4FC3-AC92-94621B54152C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartGrpcMicroserviceApp", "ShoppingCartGrpcMicroserviceApp\ShoppingCartGrpcMicroserviceApp.csproj", "{D9BE7035-B418-4FC3-AC92-94621B54152C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
