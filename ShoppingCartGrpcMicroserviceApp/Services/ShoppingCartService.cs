@@ -5,8 +5,6 @@ using Microsoft.Extensions.Logging;
 using ShoppingCartGrpcMicroserviceApp.Data;
 using ShoppingCartGrpcMicroserviceApp.Models;
 using ShoppingCartGrpcMicroserviceApp.Protos;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -81,6 +79,45 @@ namespace ShoppingCartGrpcMicroserviceApp.Services
             return response;
         }
 
+
+        public override async Task<AddItemIntoShopppingCartResponse> AddItemIntoShopppingCart(IAsyncStreamReader<AddItemIntoShopppingCartRequest> requestStream, ServerCallContext context)
+        {
+            while (await requestStream.MoveNext())
+            {
+
+                var shoppingCart = await _shoppingCartContext.ShoppingCarts.FirstOrDefaultAsync(x => x.UserName == requestStream.Current.Username);
+                if (shoppingCart == null)
+                {
+                    throw new RpcException(new Status(StatusCode.NotFound, "Invalid Request."));
+                }
+
+
+                var addedNewCartItem = _mapper.Map<ShoppingCartItem>(requestStream.Current.NewCartItem);
+                var cartItem = shoppingCart.Items.FirstOrDefault(i => i.ProductId == addedNewCartItem.ProductId);
+                if (cartItem != null)
+                {
+                    cartItem.Quantity += 1;
+                }
+                else
+                {
+                    var disCount = 50;
+                    addedNewCartItem.Price -= disCount;
+                    shoppingCart.Items.Add(addedNewCartItem);
+                }
+
+
+            }
+
+            var insertCount = await _shoppingCartContext.SaveChangesAsync();
+            var reply = new AddItemIntoShopppingCartResponse
+            {
+                Success = insertCount > 0,
+                InsertCount = insertCount
+            };
+
+            return reply;
+
+        }
 
     }
 }
