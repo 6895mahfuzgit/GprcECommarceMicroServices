@@ -34,6 +34,8 @@ namespace ShoppingCartGrpcMicroserviceApp.Services
             }
 
             var shoppingCartModel = _mapper.Map<ShoppingCartModel>(shoppingCart);
+
+            
             return shoppingCartModel;
         }
 
