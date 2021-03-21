@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShoppingCart", "ShoppingCar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartGrpcMicroserviceApp", "ShoppingCartGrpcMicroserviceApp\ShoppingCartGrpcMicroserviceApp.csproj", "{D9BE7035-B418-4FC3-AC92-94621B54152C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Discount", "Discount", "{144DC32E-D344-4944-879C-276DD72B4090}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscountGrpcMicroServiceApp", "DiscountGrpcMicroServiceApp\DiscountGrpcMicroServiceApp.csproj", "{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,10 @@ Global
 		{D9BE7035-B418-4FC3-AC92-94621B54152C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9BE7035-B418-4FC3-AC92-94621B54152C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9BE7035-B418-4FC3-AC92-94621B54152C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +54,7 @@ Global
 		{75902A51-925C-460D-9B7D-C870A2B44834} = {70130290-28DA-4AA1-B8BA-33E46281C3F5}
 		{9F7E7C4F-65A1-408A-B06C-3DAD2885FE0C} = {70130290-28DA-4AA1-B8BA-33E46281C3F5}
 		{D9BE7035-B418-4FC3-AC92-94621B54152C} = {61A54D38-13E1-4893-81F0-C073250E124B}
+		{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA} = {144DC32E-D344-4944-879C-276DD72B4090}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61B61DE5-CF52-49A3-918C-944FB04B0CA5}
