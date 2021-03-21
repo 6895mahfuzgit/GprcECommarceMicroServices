@@ -1,4 +1,6 @@
+using DiscountGrpcMicroServiceApp.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,18 @@ namespace DiscountGrpcMicroServiceApp
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+            SeedDiscountData(host);
+            host.Run();
+        }
+
+        private static void SeedDiscountData(IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            var dbContext = services.GetService<DiscountContext>();
+
+            DiscountSeedData.SeedDiscountDataInDB(dbContext);
         }
 
         // Additional configuration is required to successfully run gRPC on macOS.

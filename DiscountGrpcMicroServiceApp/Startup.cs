@@ -1,4 +1,5 @@
 ﻿using DiscountGrpcMicroServiceApp.Data;
+using DiscountGrpcMicroServiceApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,8 @@ namespace DiscountGrpcMicroServiceApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddDbContext<DiscountContext>(opt => opt.UseInMemoryDatabase("DiscountDB"));
+            services.AddDbContext<DiscountContext>(options => options.UseInMemoryDatabase("DiscountDB"));
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,7 +32,7 @@ namespace DiscountGrpcMicroServiceApp
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<DiscountService>();
 
                 endpoints.MapGet("/", async context =>
                 {

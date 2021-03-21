@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartGrpcMicroservic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Discount", "Discount", "{144DC32E-D344-4944-879C-276DD72B4090}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscountGrpcMicroServiceApp", "DiscountGrpcMicroServiceApp\DiscountGrpcMicroServiceApp.csproj", "{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscountGrpcMicroServiceApp", "DiscountGrpcMicroServiceApp\DiscountGrpcMicroServiceApp.csproj", "{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

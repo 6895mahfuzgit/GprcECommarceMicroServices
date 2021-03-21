@@ -5,7 +5,7 @@ namespace ShoppingCartGrpcMicroserviceApp.Data
 {
     public class ShoppingCartContext : DbContext
     {
-        protected ShoppingCartContext(DbContextOptions<ShoppingCartContext> options) : base(options)
+        public ShoppingCartContext(DbContextOptions<ShoppingCartContext> options) : base(options)
         {
         }
 

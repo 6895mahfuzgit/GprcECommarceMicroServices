@@ -5,7 +5,7 @@ namespace DiscountGrpcMicroServiceApp.Data
 {
     public class DiscountContext : DbContext
     {
-        protected DiscountContext(DbContextOptions options) : base(options)
+        public DiscountContext(DbContextOptions<DiscountContext> options) : base(options)
         {
         }
         public DbSet<Discount> Discounts { get; set; }
