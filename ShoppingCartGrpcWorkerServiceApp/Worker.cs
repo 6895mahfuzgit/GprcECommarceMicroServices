@@ -3,6 +3,7 @@ using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ProductGrpcMicroService.Protos;
 using ShoppingCartGrpcMicroserviceApp.Protos;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,43 @@ namespace ShoppingCartGrpcWorkerServiceApp
                 var scClient = new ShoppingCartProtoService.ShoppingCartProtoServiceClient(scChannel);
                 var scModel = await GetOrCreateShoppingModel(scClient);
 
+
+                using var scClientStraem = scClient.AddItemIntoShopppingCart();
+                // get Products
+                using var productCannel = GrpcChannel.ForAddress(_configuration.GetValue<string>("WorkerService:ProductServerURL"));
+                var productClient = new ProductProtoService.ProductProtoServiceClient(productCannel);
+
+                _logger.LogInformation("*****GetAllProducts Started****");
+                using var clientData = productClient.GetAllProducts(new GetAllProductRequest());
+                await foreach (var product in clientData.ResponseStream.ReadAllAsync())
+                {
+                    _logger.LogInformation("--Each Product--" + product);
+
+                    var newSCItem = new AddItemIntoShopppingCartRequest
+                    {
+                        Username = _configuration.GetValue<string>("WorkerService:UserName"),
+                        DiscountCode = "D100",
+                        NewCartItem = new ShoppingCartItemModel
+                        {
+                            ProductId = product.ProductId,
+                            Color = "GREEN",
+                            Price = product.Price,
+                            Productname = product.Name,
+                            Quantity = 1
+                        }
+                    };
+
+                    await scClientStraem.RequestStream.WriteAsync(newSCItem);
+
+                    _logger.LogInformation("Written Client Stream" + newSCItem.ToString());
+
+                }
+
+                await scClientStraem.RequestStream.CompleteAsync();
+
+                var addItemClientStreamResponse = await scClientStraem;
+
+                _logger.LogInformation("Add Client Stream Retsponse" + addItemClientStreamResponse.ToString());
                 await Task.Delay(_configuration.GetValue<int>("WorkerService:TaskInterval"), stoppingToken);
             }
         }
