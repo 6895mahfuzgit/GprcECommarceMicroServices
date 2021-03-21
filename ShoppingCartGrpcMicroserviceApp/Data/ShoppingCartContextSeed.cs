@@ -33,7 +33,8 @@ namespace ShoppingCartGrpcMicroserviceApp.Data
                                Color = "Red",
                                Price = 899,
                                ProductId = 2,
-                               ProductName = "P40"
+                               ProductName = "P40",
+                               
                            }
                         }
                     }

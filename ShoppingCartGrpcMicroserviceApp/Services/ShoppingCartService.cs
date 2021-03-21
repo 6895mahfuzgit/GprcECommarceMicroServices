@@ -15,12 +15,14 @@ namespace ShoppingCartGrpcMicroserviceApp.Services
         private readonly ILogger<ShoppingCartService> _logger;
         private readonly ShoppingCartContext _shoppingCartContext;
         private readonly IMapper _mapper;
+        private readonly DiscountService _discountService;
 
-        public ShoppingCartService(ILogger<ShoppingCartService> logger, ShoppingCartContext shoppingCartContext, IMapper mapper)
+        public ShoppingCartService(ILogger<ShoppingCartService> logger, ShoppingCartContext shoppingCartContext, IMapper mapper, DiscountService discountService)
         {
             _logger = logger;
             _shoppingCartContext = shoppingCartContext;
             _mapper = mapper;
+            _discountService = discountService;
         }
 
         public override async Task<ShoppingCartModel> GetShoppigCart(GetShoppigCartRequest request, ServerCallContext context)
@@ -100,8 +102,9 @@ namespace ShoppingCartGrpcMicroserviceApp.Services
                 }
                 else
                 {
-                    var disCount = 50;
-                    addedNewCartItem.Price -= disCount;
+
+                    var disCount = await _discountService.GetDiscount(requestStream.Current.DiscountCode);
+                    addedNewCartItem.Price -= disCount.Amount;
                     shoppingCart.Items.Add(addedNewCartItem);
                 }
 
