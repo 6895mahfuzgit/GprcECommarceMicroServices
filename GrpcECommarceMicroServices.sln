@@ -19,7 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Discount", "Discount", "{14
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscountGrpcMicroServiceApp", "DiscountGrpcMicroServiceApp\DiscountGrpcMicroServiceApp.csproj", "{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartGrpcWorkerServiceApp", "ShoppingCartGrpcWorkerServiceApp\ShoppingCartGrpcWorkerServiceApp.csproj", "{8E8E5243-CC11-4853-A3C5-88C9DEE493C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartGrpcWorkerServiceApp", "ShoppingCartGrpcWorkerServiceApp\ShoppingCartGrpcWorkerServiceApp.csproj", "{8E8E5243-CC11-4853-A3C5-88C9DEE493C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{BFC51D5D-197C-4AD9-87B4-B1B3134C70F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServerApp", "IdentityServerApp\IdentityServerApp.csproj", "{18A294BC-7132-44BF-A470-1254C925DDAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,10 @@ Global
 		{8E8E5243-CC11-4853-A3C5-88C9DEE493C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E8E5243-CC11-4853-A3C5-88C9DEE493C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E8E5243-CC11-4853-A3C5-88C9DEE493C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A294BC-7132-44BF-A470-1254C925DDAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A294BC-7132-44BF-A470-1254C925DDAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A294BC-7132-44BF-A470-1254C925DDAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A294BC-7132-44BF-A470-1254C925DDAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +70,7 @@ Global
 		{D9BE7035-B418-4FC3-AC92-94621B54152C} = {61A54D38-13E1-4893-81F0-C073250E124B}
 		{6325BD6A-882D-484E-BEED-3B6DDAEFA4CA} = {144DC32E-D344-4944-879C-276DD72B4090}
 		{8E8E5243-CC11-4853-A3C5-88C9DEE493C2} = {61A54D38-13E1-4893-81F0-C073250E124B}
+		{18A294BC-7132-44BF-A470-1254C925DDAE} = {BFC51D5D-197C-4AD9-87B4-B1B3134C70F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61B61DE5-CF52-49A3-918C-944FB04B0CA5}
