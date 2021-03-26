@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ShoppingCartGrpcMicroserviceApp.Data;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingCartGrpcMicroserviceApp.Services
 {
+     [Authorize]
     public class ShoppingCartService : ShoppingCartProtoService.ShoppingCartProtoServiceBase
     {
         private readonly ILogger<ShoppingCartService> _logger;

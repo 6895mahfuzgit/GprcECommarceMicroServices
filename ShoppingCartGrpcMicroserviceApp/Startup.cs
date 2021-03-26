@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using ShoppingCartGrpcMicroserviceApp.Data;
 using ShoppingCartGrpcMicroserviceApp.Services;
 using System;
@@ -16,7 +17,7 @@ namespace ShoppingCartGrpcMicroserviceApp
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-       
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,6 +36,18 @@ namespace ShoppingCartGrpcMicroserviceApp
             services.AddScoped<DiscountService>();
             services.AddDbContext<ShoppingCartContext>(options => options.UseInMemoryDatabase("ShoppingCartDB"));
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddAuthentication("Bearer")
+                     .AddJwtBearer("Bearer", options =>
+                     {
+                         options.Authority = "https://localhost:5005";
+                         options.TokenValidationParameters = new TokenValidationParameters
+                         {
+                             ValidateAudience = false
+                         };
+                     });
+
+            services.AddAuthorization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +59,9 @@ namespace ShoppingCartGrpcMicroserviceApp
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
