@@ -1,5 +1,6 @@
 using Grpc.Core;
 using Grpc.Net.Client;
+using IdentityModel.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,7 @@ using ShoppingCartGrpcMicroserviceApp.Protos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,9 +31,13 @@ namespace ShoppingCartGrpcWorkerServiceApp
             Thread.Sleep(3000);
             while (!stoppingToken.IsCancellationRequested)
             {
+
                 //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 using var scChannel = GrpcChannel.ForAddress(_configuration.GetValue<string>("WorkerService:ShoppingCartServerURL"));
                 var scClient = new ShoppingCartProtoService.ShoppingCartProtoServiceClient(scChannel);
+                //Get token from identity Server
+                var token = await GetTokenFromIdentityServer();
+
                 var scModel = await GetOrCreateShoppingModel(scClient);
 
 
@@ -73,6 +79,34 @@ namespace ShoppingCartGrpcWorkerServiceApp
                 _logger.LogInformation("Add Client Stream Retsponse" + addItemClientStreamResponse.ToString());
                 await Task.Delay(_configuration.GetValue<int>("WorkerService:TaskInterval"), stoppingToken);
             }
+        }
+
+        private async Task<string> GetTokenFromIdentityServer()
+        {
+            var client = new HttpClient();
+            var discover = await client.GetDiscoveryDocumentAsync(_configuration.GetValue<string>("WorkerService:IdentityServer"));
+
+            if (discover.IsError)
+            {
+                Console.WriteLine(discover.Error);
+                return string.Empty;
+            }
+
+            var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            {
+                Address = discover.TokenEndpoint,
+                ClientId = "ShoppingCartClient",
+                ClientSecret = "secret",
+                Scope = "ShoppingCartAPI"
+            });
+
+            if (tokenResponse.IsError)
+            {
+                Console.WriteLine(discover.Error);
+                return string.Empty;
+            }
+
+            return tokenResponse.AccessToken;
         }
 
         private async Task<ShoppingCartModel> GetOrCreateShoppingModel(ShoppingCartProtoService.ShoppingCartProtoServiceClient scClient)

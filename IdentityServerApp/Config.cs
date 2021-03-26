@@ -9,7 +9,7 @@ namespace IdentityServerApp
         public static IEnumerable<Client> Clients => new Client[]
         {
             new Client{
-                ClientId="ShoppingCartAPI",
+                ClientId="ShoppingCartClient",
                 AllowedGrantTypes=GrantTypes.ClientCredentials,
                 ClientSecrets={
                    new Secret("secret".Sha256())
