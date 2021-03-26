@@ -58,6 +58,7 @@ namespace ShoppingCartGrpcMicroserviceApp.Services
             return shoppingCartModel;
         }
 
+        [AllowAnonymous]
         public override async Task<RemoveItemFromShoppingCartResponse> RemoveItemFromShoppingCart(RemoveItemFromShoppingCartRequest request, ServerCallContext context)
         {
             var shoppingCart = await _shoppingCartContext.ShoppingCarts.FirstOrDefaultAsync(x => x.UserName == request.Username);
@@ -85,7 +86,7 @@ namespace ShoppingCartGrpcMicroserviceApp.Services
             return response;
         }
 
-
+        [AllowAnonymous]
         public override async Task<AddItemIntoShopppingCartResponse> AddItemIntoShopppingCart(IAsyncStreamReader<AddItemIntoShopppingCartRequest> requestStream, ServerCallContext context)
         {
             while (await requestStream.MoveNext())

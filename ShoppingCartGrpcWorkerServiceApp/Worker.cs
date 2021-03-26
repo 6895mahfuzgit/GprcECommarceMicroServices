@@ -38,7 +38,7 @@ namespace ShoppingCartGrpcWorkerServiceApp
                 //Get token from identity Server
                 var token = await GetTokenFromIdentityServer();
 
-                var scModel = await GetOrCreateShoppingModel(scClient);
+                var scModel = await GetOrCreateShoppingModel(scClient, token);
 
 
                 using var scClientStraem = scClient.AddItemIntoShopppingCart();
@@ -109,17 +109,20 @@ namespace ShoppingCartGrpcWorkerServiceApp
             return tokenResponse.AccessToken;
         }
 
-        private async Task<ShoppingCartModel> GetOrCreateShoppingModel(ShoppingCartProtoService.ShoppingCartProtoServiceClient scClient)
+        private async Task<ShoppingCartModel> GetOrCreateShoppingModel(ShoppingCartProtoService.ShoppingCartProtoServiceClient scClient,string token)
         {
             ShoppingCartModel shoppingCartModel;
             try
             {
                 _logger.LogInformation("GetShoppingCartAsync Started.......");
 
+                var headers = new Metadata();
+
+                headers.Add("Authorization",$"Bearer {token}");
                 shoppingCartModel = await scClient.GetShoppigCartAsync(new GetShoppigCartRequest
                 {
                     Username = _configuration.GetValue<string>("WorkerService:UserName")
-                });
+                },headers);
 
                 _logger.LogInformation($"Response From GetShoppigCartAsync {shoppingCartModel.ToString()}");
 
